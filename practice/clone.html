@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>clone</title>
+</head>
+<body>
+  <script>
+    const target1 = {
+      a: 1,
+      b: '2',
+      c: null,
+      d: undefined
+    }
+    function deepClone1(target) {
+      let cloneTarget = {}
+      for (const key in target) {
+        cloneTarget[key] = target[key]
+      }
+      return cloneTarget
+    }
+
+    const target2 = {
+      field1: 1,
+      field2: undefined,
+      field3: 'ConardLi',
+      field4: {
+          child: 'child',
+          child2: {
+              child2: 'child2'
+          }
+      }
+    };
+    function deepClone2(target) {
+      let cloneTarget = {}
+      if (typeof target === 'object') {
+        for (const key in target) {
+          cloneTarget[key] = deepClone2(target[key])
+        }
+        return cloneTarget
+      } else {
+        return target;
+      }
+    }
+
+    const target3 = {
+      field1: 1,
+      field2: undefined,
+      field3: {
+        child: 'child'
+      },
+      field4: [2, 4, 8]
+    };
+    function deepClone3(target) {
+      if (typeof target === 'object') {
+        let cloneTarget = Array.isArray(target) ? [] : {}
+
+        for (const key in target) {
+          cloneTarget[key] = deepClone3(target[key])
+        }
+        return cloneTarget
+      } else {
+        return target;
+      }
+    }
+
+    const target4 = {
+      field1: 1,
+      field2: undefined,
+      field3: {
+          child: 'child'
+      },
+      field4: [2, 4, 8]
+    };
+    target4.target = target4;
+    function deepClone4(target, map = new Map()) {
+      if (typeof target === 'object') {
+        let cloneTarget = Array.isArray(target) ? [] : {}
+        if (map.get(target)) {
+          return target;
+        }
+        map.set(target, cloneTarget);
+        for (const key in target) {
+          cloneTarget[key] = deepClone4(target[key], map)
+        }
+        return cloneTarget
+      } else {
+        return target;
+      }
+    }
+
+    const result = deepClone1(target1)
+    console.log('deepClone1', result)
+
+    const result2 = deepClone2(target2)
+    console.log('deepClone2', result2)
+
+    const result3 = deepClone3(target3)
+    console.log('deepClone3', result3)
+
+    const result4 = deepClone4(target4)
+    console.log('deepClone4', result4)
+
+    
+  </script>
+</body>
+</html>

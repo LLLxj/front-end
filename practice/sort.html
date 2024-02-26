@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 1、冒泡排序
+    const list = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]
+    function bubleSort(data) {
+      const length = data?.length
+      if (length <= 1) {
+        return data;
+      }
+      for (let i = 0;i < length - 1; i ++) {
+        for (let j = 0 ;j < length - 1; j ++) {
+          if (data?.[j] > data?.[j + 1]) {
+            const min = data?.[j];
+            const max = data?.[j + 1];
+            data[j] = max;
+            data[j + 1] = min;
+          }
+        }
+      }
+      return data
+    }
+    const bubleSortStartTime = performance.now();
+    const bubleSortArray = bubleSort(list);
+    const bubleSortEndTime = performance.now();
+    const bubleSortExecutionTime = bubleSortEndTime - bubleSortStartTime;
+    console.log("Function bubleSort executed in " + bubleSortExecutionTime + " milliseconds.");
+    console.log('bubleSortArray', bubleSortArray)
+
+    // 快速排序
+    function quickSort(data) {
+      const length = data?.length
+      if (length <= 1) {
+        return data
+      }
+      const middle = data?.[0]
+      const leftArray = []
+      const rightArray = []
+      for (let i = 0; i < length - 1; i++) {
+        if (data?.[i] > middle) {
+          rightArray.push(data?.[i])
+        } else {
+          leftArray.push(data?.[i])
+        }
+      }
+      return [ ...quickSort(leftArray), middle, ...quickSort(rightArray) ]
+    }
+
+    const quickSortStartTime = performance.now();
+    const quickSortArray = quickSort(list);
+    const quickSortEndTime = performance.now();
+    const quickSortExecutionTime = quickSortEndTime - quickSortStartTime;
+    console.log("Function quickSort executed in " + quickSortExecutionTime + " milliseconds.");
+    console.log('quickSortArray', quickSortArray)
+  </script>
+</body>
+</html>

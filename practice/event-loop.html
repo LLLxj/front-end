@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <img src="https://moli-soa.oss-cn-hangzhou.aliyuncs.com/test/import/supplier/b71d2891958a48ee9e04ec8d6f516835/643337b90b2767c63a26773bd5dd71d.png?Expires=1708514174&OSSAccessKeyId=LTAI5tL2sF9C9cFimzLDAxnX&Signature=R4uptN8wE5LTeYnmr6Zjtxe33dI%3D" alt="">
+  <script>
+    function eventLoop1() {
+      setTimeout(function () {
+        console.log(1);
+      });
+
+      new Promise(function (resolve, reject) {
+        console.log(2)
+        resolve(3)
+      }).then(function (val) {
+        console.log(val);
+      })
+    }
+    eventLoop1()
+
+
+    function eventLoop2() {
+      console.log("1");
+      setTimeout(() => {
+        console.log("2");
+        Promise.resolve().then(() => console.log("3"));
+      });
+
+      Promise.resolve().then(() => console.log("4"));
+
+      console.log("5");
+    }
+    eventLoop2() // 1 5 4 2 3
+
+    function eventLoop3() {
+      console.log(1);
+      setTimeout(() => {
+        console.log(2);
+      }, 100);
+      setTimeout(() => {
+        console.log(3);
+      }, 0);
+      console.log(4)
+    }
+
+    eventLoop3() // 1 4 2 3
+
+    function eventLoop4() {
+      console.log('aaa');
+
+      setTimeout(() => console.log('t1'), 0);
+      (async () => {
+        console.log(111);
+        await console.log(222);
+        console.log(333);
+        setTimeout(() => console.log('t2'), 0);
+      })().then(() => {
+        console.log(444);
+      });
+
+      console.log('bbb');
+    }
+
+    eventLoop4() // aaa bbb 
+    /**
+     * console.log          MacroTask   MicroTask
+     * aaa bbb              t1 444         async 
+     * aaa bbb 111 333      222 t2
+     * 
+     * 
+     * 
+     */
+
+  </script>
+</body>
+
+</html>
